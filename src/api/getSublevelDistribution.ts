@@ -1,6 +1,6 @@
 import { Element } from "./getElement";
 
-export function sublevelDistribution(element: Element, charge: number) {
+export function getSublevelDistribution(element: Element, charge: number) {
   let subnivel = {
     s: {
       um: 0,

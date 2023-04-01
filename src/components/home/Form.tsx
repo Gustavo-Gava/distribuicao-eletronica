@@ -1,18 +1,19 @@
 import { getElement } from "@/api/getElement";
-import { sublevelDistribution } from "@/api/sublevelDistribution";
 import { useState } from "react";
 import Select, { GroupBase, StylesConfig } from "react-select";
 import { toast } from "react-toastify";
 
 import Image from "next/image";
 import { useChemicalElement } from "@/context/ChemicalElementProvider";
+import { getSublevelDistribution } from "@/api/getSublevelDistribution";
+import { getLayerDistribution } from "@/api/getLayerDistribution";
 
 const options = [
-	{ value: "-2", label: -2 },
-	{ value: "-1", label: -1 },
-	{ value: "0", label: 0 },
-	{ value: "1", label: +1 },
-	{ value: "2", label: +2 },
+	{ value: -2, label: "-2" },
+	{ value: -1, label: "-1" },
+	{ value: 0, label: "0" },
+	{ value: 1, label: "+1" },
+	{ value: 2, label: "+2" },
 ];
 
 export const stylesDefault = {
@@ -45,7 +46,7 @@ export function Form() {
 	const [selectedOption, setSelectedOption] = useState(options[2]);
 	const [elementInput, setElementInput] = useState("");
 
-	const { element, setElement, setSublevelDistribution } = useChemicalElement();
+	const { setElement, setSublevelDistribution, setLayerDistribution } = useChemicalElement();
 
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -57,14 +58,16 @@ export function Form() {
 			return;
 		}
 
-		const sublevelDistribuition = sublevelDistribution(
+		const sublevelDistribuition = getSublevelDistribution(
 			returnedElement,
 			Number(selectedOption.value)
 		);
 
+		const layerDistribution = getLayerDistribution(sublevelDistribuition);
+
 		setElement(returnedElement);
 		setSublevelDistribution(sublevelDistribuition);
-		console.log(element);
+		setLayerDistribution(layerDistribution);
 	}
 
 	return (
@@ -101,7 +104,7 @@ export function Form() {
 						options={options}
 						placeholder="0"
 						styles={stylesDefault}
-						onChange={(option) => setSelectedOption(option as { value: string; label: number })}
+						onChange={(option) => setSelectedOption(option as { value: number; label: string })}
 						defaultValue={0}
 					/>
 				</div>

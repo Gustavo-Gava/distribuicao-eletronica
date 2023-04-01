@@ -11,7 +11,7 @@ export type Element = {
 	periodo: number;
 };
 
-interface ChemicalElementContextData {
+export interface ChemicalElementContextData {
 	element: Element;
 	setElement: (element: Element) => void;
 	sublevelDistribution: {
@@ -46,7 +46,14 @@ interface ChemicalElementContextData {
 	setSublevelDistribution: (
 		sublevelDistribution: ChemicalElementContextData["sublevelDistribution"]
 	) => void;
-	layerDistribution: string;
+	layerDistribution: {
+		k: number;
+		l: number;
+		m: number;
+		n: number;
+		o: number;
+		p: number;
+	};
 	setLayerDistribution: (
 		layerDistribution: ChemicalElementContextData["layerDistribution"]
 	) => void;
@@ -64,7 +71,7 @@ export function ChemicalElementProvider({ children }: ChemicalElementProviderPro
 		{} as ChemicalElementContextData["sublevelDistribution"]
 	);
 	const [layerDistribution, setLayerDistribution] = useState(
-		"" as ChemicalElementContextData["layerDistribution"]
+		{} as ChemicalElementContextData["layerDistribution"]
 	);
 
 	return (

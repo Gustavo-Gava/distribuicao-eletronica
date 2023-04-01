@@ -1,6 +1,7 @@
 import { Header } from "@/components/header";
 import { Form } from "@/components/home/Form";
-import { ChemicalElementProvider, useChemicalElement } from "@/context/ChemicalElementProvider";
+import { useChemicalElement } from "@/context/ChemicalElementProvider";
+import { getSubnivelString } from "@/getSubnivelString";
 import Head from "next/head";
 import Image from "next/image";
 
@@ -14,9 +15,11 @@ const element_properties_dictionary = {
 } as Record<string, string>;
 
 export default function Home() {
-	const { element } = useChemicalElement();
+	const { element, layerDistribution, sublevelDistribution } = useChemicalElement();
 
-	console.log("element: ", element);
+	const sublevelDistributionFormatted = getSubnivelString(sublevelDistribution) ?? "";
+
+	console.log(sublevelDistributionFormatted);
 
 	return (
 		<>
@@ -42,23 +45,25 @@ export default function Home() {
 									<h3 className="text-xl font-medium">Classificação por camadas</h3>
 
 									<div>
-										<p>K: 2</p>
-										<p>L: 8</p>
-										<p>M: 18</p>
-										<p>N: 32</p>
+										{Object.entries(layerDistribution).map(([key, value]) => {
+											if (value === 0) return null;
+
+											return (
+												<p key={key}>
+													{key.toUpperCase()}: {value}
+												</p>
+											);
+										})}
 									</div>
 								</div>
 
 								<div className="flex w-full flex-col gap-2 rounded-lg bg-blue-400 bg-opacity-50 p-4 shadow-lg">
 									<h3 className="text-xl font-medium">Classificação por subníveis</h3>
 
-									<div className="flex gap-2">
-										<span>1s²</span>
-										<span>2s²</span>
-										<span>2p⁶</span>
-										<span>3s²</span>
-										<span>3p⁶</span>
-									</div>
+									<div
+										className="flex gap-2"
+										dangerouslySetInnerHTML={{ __html: sublevelDistributionFormatted }}
+									/>
 								</div>
 							</div>
 
