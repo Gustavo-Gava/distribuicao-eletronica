@@ -1,3 +1,4 @@
+import { ContentWrapper } from "@/components";
 import { useChemicalElement } from "@/context/ChemicalElementProvider";
 import { getSubnivelString } from "@/getSubnivelString";
 
@@ -22,7 +23,7 @@ export function FormResult() {
 			<div className="my-6 h-[1px] w-full bg-gray-200 shadow-md" />
 
 			<div className="flex flex-col justify-between gap-8 md:flex-row">
-				<div className="flex w-full flex-col gap-2 rounded-lg bg-blue-400 bg-opacity-50 p-4 shadow-lg">
+				<ContentWrapper>
 					<h3 className="text-xl font-medium">Classificação por camadas</h3>
 
 					<div>
@@ -36,32 +37,34 @@ export function FormResult() {
 							);
 						})}
 					</div>
-				</div>
+				</ContentWrapper>
 
-				<div className="flex w-full flex-col gap-2 rounded-lg bg-blue-400 bg-opacity-50 p-4 shadow-lg">
+				<ContentWrapper>
 					<h3 className="text-xl font-medium">Classificação por subníveis</h3>
 
 					<div
 						className="flex gap-2"
 						dangerouslySetInnerHTML={{ __html: sublevelDistributionFormatted }}
 					/>
-				</div>
+				</ContentWrapper>
 			</div>
 
-			<div className="mt-6 flex w-full flex-col gap-2 rounded-lg bg-blue-400 bg-opacity-50 p-4 shadow-lg">
-				<h3 className="text-xl font-medium">Propriedades do Elemento</h3>
+			<div className="mt-6">
+				<ContentWrapper>
+					<h3 className="text-xl font-medium">Propriedades do Elemento</h3>
 
-				<div>
-					{Object.entries(element).map(([key, value], index) => {
-						if (value === null || value === 0 || banned_properties.includes(key)) return null;
+					<div>
+						{Object.entries(element).map(([key, value], index) => {
+							if (value === null || value === 0 || banned_properties.includes(key)) return null;
 
-						return (
-							<p key={index}>
-								{element_properties_dictionary[key]}: {value}
-							</p>
-						);
-					})}
-				</div>
+							return (
+								<p key={index}>
+									{element_properties_dictionary[key]}: {value}
+								</p>
+							);
+						})}
+					</div>
+				</ContentWrapper>
 			</div>
 		</>
 	);
