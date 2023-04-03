@@ -6,13 +6,15 @@ import Head from "next/head";
 import Image from "next/image";
 
 const element_properties_dictionary = {
-	nome: "Nome do elemento: ",
-	abr: "Abreviação: ",
-	massa: "Massa atômica: ",
-	num_atomico: "Número atômico: ",
-	num_protons: "Número de prótons: ",
-	num_neutrons: "Número de nêutrons: ",
+	nome: "Nome do elemento",
+	abr: "Abreviação",
+	massa: "Massa atômica",
+	num_atomico: "Número atômico",
+	num_protons: "Número de prótons",
+	num_neutrons: "Número de nêutrons",
 } as Record<string, string>;
+
+const banned_properties = ["familia", "periodo"];
 
 export default function Home() {
 	const { element, layerDistribution, sublevelDistribution } = useChemicalElement();
@@ -72,12 +74,13 @@ export default function Home() {
 								<h3 className="text-xl font-medium">Propriedades do Elemento</h3>
 
 								<div>
-									{Object.entries(element).map(([key, value]) => {
-										if (value === null || value === 0) return null;
+									{Object.entries(element).map(([key, value], index) => {
+										if (value === null || value === 0 || banned_properties.includes(key))
+											return null;
 
 										return (
-											<p key={value}>
-												{element_properties_dictionary[key]} {value}
+											<p key={index}>
+												{element_properties_dictionary[key]}: {value}
 											</p>
 										);
 									})}
